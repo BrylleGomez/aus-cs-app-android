@@ -220,6 +220,11 @@ public class RegisterActivity extends AppCompatActivity {
         String email = user.getEmail();
         String joinDate = AppUtils.epochToDate(user.getMetadata().getCreationTimestamp());
 
+//        // Append extension to supplied mobile number
+//        String mobileExt = "+97150";
+//        String completeMobile = mobileExt + mobile;
+//        Toast.makeText(getApplicationContext(),"Mobile: " + completeMobile, Toast.LENGTH_SHORT).show();
+
         // Create document
         final HashMap<String,Object> entry = new HashMap<>();
         entry.put(AppUtils.KEY_FIRST_NAME, firstname);
