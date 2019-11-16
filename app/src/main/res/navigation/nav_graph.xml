@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/profileFragment">
+
+    <fragment android:id="@+id/homeFragment" android:name="com.example.aus_cs_app_v10.HomeFragment"
+              android:label="Home" tools:layout="@layout/fragment_home"/>
+    <fragment android:id="@+id/profileFragment" android:name="com.example.aus_cs_app_v10.profile.ProfileFragment"
+              android:label="Profile" tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/actionUpdatePassword"
+            app:destination="@id/passwordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.example.aus_cs_app_v10.PasswordFragment"
+        android:label="Update Password"
+        tools:layout="@layout/fragment_password">
+        <action
+            android:id="@+id/actionPasswordUpdated"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="com.example.aus_cs_app_v10.events.EventsFragment"
+        android:label="Events"
+        tools:layout="@layout/fragment_events" />
+</navigation>

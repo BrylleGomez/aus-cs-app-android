@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">aus_cs_app_android_j</string>
+    <string name="app_name">AUS_CS_App_v1.0</string>
+
+    <!-- activity_login.xml -->
+    <string name="login_textview_header">AUS Community Services\nLog In</string>
+    <string name="login_plaintext_username_hint">E-mail</string>
+    <string name="login_plaintext_password_hint">Password</string>
+    <string name="login_button_login">Login</string>
+    <string name="login_textview_noaccount">Don\'t have an account?</string>
+    <string name="login_dialog_signup_progress">User login in progress! \nPlease wait…</string>
+
+    <!-- activity_register.xml -->
+    <string name="register_textview_header">AUS Community Services\nSign Up</string>
+    <string name="register_plaintext_username_hint">E-mail</string>
+    <string name="register_plaintext_password_hint">Password</string>
+    <string name="register_button_signup">Sign Up</string>
+    <string name="register_textview_yesaccount">Already have an account?</string>
+    <string name="register_dialog_signup_progress">User registration in progress! \nPlease wait…</string>
+
+    <!-- activity_home.xml -->
+    <string name="home_textview_header">Dashboard</string>
+    <string name="home_textview_message">error</string>
+
+    <!-- fragment_profile.xml -->
+    <string name="profile_textview_name_p">Loading…</string>
+    <string name="profile_textview_email_p">Loading…</string>
+    <string name="profile_textview_phone_p">Loading…</string>
+    <string name="profile_textview_joindate_p">Loading…</string>
+    <string name="profile_button_edit">Edit Profile</string>
+    <string name="profile_button_save">Save Changes</string>
+    <string name="profile_button_discard">Discard Changes</string>
+    <string name="profile_button_changepass">Change Password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
