@@ -53,7 +53,7 @@ public class HomeActivity extends FragmentActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            Fragment selectedFragment = null;
+            // Fragment selectedFragment = null;
             switch (menuItem.getItemId()) {
                 case R.id.eventlistBtn:
                     fragmentManager.beginTransaction().hide(active).show(efragment).commit();
@@ -63,7 +63,7 @@ public class HomeActivity extends FragmentActivity {
                     startActivity(new Intent(getApplicationContext(), QRScanActivity.class));
                     return true;
                 case R.id.profileBtn:
-                    fragmentManager.beginTransaction().hide(active).show(efragment).commit();
+                    fragmentManager.beginTransaction().hide(active).show(pfragment).commit();
                     active = pfragment;
                     return true;
             }

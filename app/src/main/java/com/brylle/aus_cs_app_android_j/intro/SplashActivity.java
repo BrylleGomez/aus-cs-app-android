@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 // Do following after specified delay
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             }
         }, loadTime);
