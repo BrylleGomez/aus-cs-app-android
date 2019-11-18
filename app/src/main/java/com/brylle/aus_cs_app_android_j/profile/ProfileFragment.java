@@ -217,7 +217,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void seeRegisteredEvents() {
-        startActivity(new Intent(getContext(), RegisteredEventsActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        startActivity(new Intent(getContext(), RegisteredEventsActivity.class));
     }
 
 //    private void editProfile() {
