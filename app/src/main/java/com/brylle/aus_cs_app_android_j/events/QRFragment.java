@@ -52,7 +52,9 @@ public class QRFragment extends Fragment {
 
         Bundle arguments = this.getArguments();
         if (arguments != null) {
-            String QRserial = "Scanned: " + this.getArguments().getString("qrSerial");
+            String QRserial = arguments.getString("qrSerial");
+            String displayText = "Scanned: " + QRserial;
+            tvResult.setText(displayText);
         }
 
 

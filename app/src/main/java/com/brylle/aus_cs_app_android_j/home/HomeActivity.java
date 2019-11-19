@@ -40,19 +40,16 @@ public class HomeActivity extends FragmentActivity {
         BottomNavigationView bottomNavigation = findViewById(R.id.navigationView);
 
         // Get intent from QR activity
-        Intent intent = getIntent();    // get intent from QR activity (in the case it was started by QRScanActivity)
+        Intent intent = getIntent();                                // get intent from QR activity (in the case it was started by QRScanActivity)
         String data = intent.getStringExtra("qrData");      // will be null if this activity was NOT started by QRScanActivity
         Bundle bundle = new Bundle();                             // create Bundle to pass to QRFragment info from QRScanActivity (in the case this activity was started by QRScanActivity)
-        if (data != null) {     // if non empty intent (coming from QR activity), pass data to QR fragment
+        if (data != null) {                                         // if non empty intent (coming from QR activity), pass data to QR fragment
             bundle.putString("qrSerial", data);
-            //bundle.putBoolean("qrValid", true);                     // inform QRFragment that there is a QR code to be read
             qfragment.setArguments(bundle);
             fragmentManager.beginTransaction().add(R.id.frameLayout,qfragment,"3").commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,pfragment,"2").hide(pfragment).commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,efragment,"1").hide(efragment).commit();
         } else {    // if empty intent then load home page normally
-            //bundle.putBoolean("qrValid", false);                    // inform QRFragment that there is NO QR code to be read
-            //qfragment.setArguments(bundle);
             fragmentManager.beginTransaction().add(R.id.frameLayout,qfragment,"3").hide(qfragment).commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,pfragment,"2").hide(pfragment).commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,efragment,"1").commit();
