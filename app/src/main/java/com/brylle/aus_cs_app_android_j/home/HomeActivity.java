@@ -49,6 +49,7 @@ public class HomeActivity extends FragmentActivity {
             fragmentManager.beginTransaction().add(R.id.frameLayout,qfragment,"3").commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,pfragment,"2").hide(pfragment).commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,efragment,"1").hide(efragment).commit();
+            data = null;
         } else {    // if empty intent then load home page normally
             fragmentManager.beginTransaction().add(R.id.frameLayout,qfragment,"3").hide(qfragment).commit();
             fragmentManager.beginTransaction().add(R.id.frameLayout,pfragment,"2").hide(pfragment).commit();

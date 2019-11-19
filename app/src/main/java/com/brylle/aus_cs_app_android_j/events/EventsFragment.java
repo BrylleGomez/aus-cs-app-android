@@ -1,6 +1,5 @@
 package com.brylle.aus_cs_app_android_j.events;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,12 +21,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class EventsFragment extends Fragment {
@@ -101,40 +102,7 @@ public class EventsFragment extends Fragment {
                             Toast.makeText(getContext(), "Retrieving event " + event.getID(), Toast.LENGTH_LONG).show();
                             final int eventID = event.getID();
 
-                            // Add event to user's registered_events
-                            if (currentUser != null) {      // Fetch user from database using query
-                                firestoreUserList.whereEqualTo(AppUtils.KEY_EMAIL, currentUser.getEmail())      // query: look for user document that matches email of current user
-                                        .get()
-                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                for (DocumentSnapshot document : queryDocumentSnapshots) {      // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
-                                                    // Update user's registered_events field with new event
-                                                    document.getReference().update(AppUtils.KEY_REGISTERED_EVENTS, FieldValue.arrayUnion(eventID))
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-                                                                    Log.d("EventsFragment", "1: User has successfully registered for event " + eventID + "!");
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.w("EventsFragment", "1: Error registering user to event " + eventID + "!", e);
-                                                                }
-                                                            });
-                                                }
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w("EventsFragment", "1: Error fetching user through query! ", e);
-                                            }
-                                        });
-                            }
-
-                            // Add user to event's registered_students
+                            // (1) Add user to event's registered_students
                             if (currentUser != null) {
                                 firestoreEventList.whereEqualTo(AppUtils.KEY_EVENT_ID, eventID)      // query: look for event document that matches event id of clicked event
                                         .get()
@@ -142,6 +110,7 @@ public class EventsFragment extends Fragment {
                                             @Override
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 for (DocumentSnapshot document : queryDocumentSnapshots) {   // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
+                                                    final DocumentSnapshot eventSnapshot = document;
                                                     // Update event's registered_students field with new student
                                                     document.getReference().update(AppUtils.KEY_REGISTERED_STUDENTS, FieldValue.arrayUnion(currentUser.getEmail()))
                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -156,6 +125,47 @@ public class EventsFragment extends Fragment {
                                                                     Log.w("EventsFragment", "2: Error registering user to event " + eventID + "!", e);
                                                                 }
                                                             });
+
+                                                    // (2) Add event object to user's registered_events
+                                                    if (currentUser != null) {      // Fetch user from database using query
+                                                        firestoreUserList.whereEqualTo(AppUtils.KEY_EMAIL, currentUser.getEmail())      // query: look for user document that matches email of current user
+                                                                .get()
+                                                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                        for (DocumentSnapshot document : queryDocumentSnapshots) {      // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
+                                                                            final HashMap<String,Object> eventEntry = new HashMap<>();
+                                                                            eventEntry.put(AppUtils.KEY_EVENT_ID, eventSnapshot.getLong(AppUtils.KEY_EVENT_ID));
+                                                                            eventEntry.put(AppUtils.KEY_EVENT_NAME, eventSnapshot.getString(AppUtils.KEY_EVENT_NAME));
+                                                                            eventEntry.put(AppUtils.KEY_START_DATE, eventSnapshot.getString(AppUtils.KEY_START_DATE));
+                                                                            eventEntry.put(AppUtils.KEY_END_DATE, eventSnapshot.getString(AppUtils.KEY_END_DATE));
+                                                                            eventEntry.put(AppUtils.KEY_START_TIME, eventSnapshot.getString(AppUtils.KEY_START_TIME));
+                                                                            eventEntry.put(AppUtils.KEY_END_TIME, eventSnapshot.getString(AppUtils.KEY_END_TIME));
+                                                                            document.getReference().update(AppUtils.KEY_REGISTERED_EVENTS, FieldValue.arrayUnion(eventEntry))
+                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onSuccess(Void aVoid) {
+                                                                                            Log.d("EventsFragment", "1: User has successfully registered for event " + eventID + "!");
+                                                                                        }
+                                                                                    })
+                                                                                    .addOnFailureListener(new OnFailureListener() {
+                                                                                        @Override
+                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                            Log.w("EventsFragment", "1: Error registering user to event " + eventID + "!", e);
+                                                                                        }
+                                                                                    });
+
+                                                                        }
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Log.w("EventsFragment", "1: Error fetching user through query! ", e);
+                                                                    }
+                                                                });
+                                                    }
+
                                                 }
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {

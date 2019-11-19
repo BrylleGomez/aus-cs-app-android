@@ -15,8 +15,13 @@ public class AppUtils {
     // Firestore Keys of /metadata/counts
     public static String KEY_USER_COUNT = "user_count";
     // Firestore Keys of /events/event_x
+    public static String KEY_END_DATE = "end_date";
+    public static String KEY_END_TIME = "end_time";
     public static String KEY_EVENT_ID = "event_id";
+    public static String KEY_EVENT_NAME = "event_name";
     public static String KEY_REGISTERED_STUDENTS = "registered_students";
+    public static String KEY_START_DATE = "start_date";
+    public static String KEY_START_TIME = "start_time";
 
     public static String epochToDate(Long time) {
         return new SimpleDateFormat("MMM dd, yyyy", Locale.US).format(new Date(time));
