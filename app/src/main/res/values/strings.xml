@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AUS_CS_App_v1.0</string>
+    <string name="app_name">AUS Community Services</string>
 
     <!-- activity_login.xml -->
     <string name="login_textview_header">AUS Community Services\nLog In</string>
