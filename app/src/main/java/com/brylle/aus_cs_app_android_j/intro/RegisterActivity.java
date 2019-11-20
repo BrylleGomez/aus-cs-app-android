@@ -192,6 +192,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     hideProgress();
+                    firebaseAuth.signOut();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
 
                 } else {
@@ -225,13 +226,20 @@ public class RegisterActivity extends AppCompatActivity {
 //        String completeMobile = mobileExt + mobile;
 //        Toast.makeText(getApplicationContext(),"Mobile: " + completeMobile, Toast.LENGTH_SHORT).show();
 
+        // Append extension to supplied mobile number
+        String mobileExt = "+9715";
+        String mobileNum = mobile;
+        String completeMobile = mobileExt.concat(mobileNum);
+
         // Create document
         final HashMap<String,Object> entry = new HashMap<>();
         entry.put(AppUtils.KEY_FIRST_NAME, firstname);
         entry.put(AppUtils.KEY_LAST_NAME, lastname);
         entry.put(AppUtils.KEY_EMAIL, email);
-        entry.put(AppUtils.KEY_MOBILE_NUMBER, mobile);
+        entry.put(AppUtils.KEY_MOBILE_NUMBER, completeMobile);
         entry.put(AppUtils.KEY_VOLUNTEER_HOURS, 0);
+
+        Toast.makeText(getApplicationContext(),"Mobile: " + completeMobile, Toast.LENGTH_SHORT).show();
 
         firestoreUserCount.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

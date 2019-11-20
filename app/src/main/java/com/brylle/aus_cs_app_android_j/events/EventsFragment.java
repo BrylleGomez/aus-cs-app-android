@@ -102,6 +102,7 @@ public class EventsFragment extends Fragment {
                             Toast.makeText(getContext(), "Retrieving event " + event.getID(), Toast.LENGTH_LONG).show();
                             final int eventID = event.getID();
 
+
                             // (1) Add user to event's registered_students
                             if (currentUser != null) {
                                 firestoreEventList.whereEqualTo(AppUtils.KEY_EVENT_ID, eventID)      // query: look for event document that matches event id of clicked event

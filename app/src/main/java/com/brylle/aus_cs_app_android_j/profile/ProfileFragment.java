@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -105,6 +107,13 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) { seeRegisteredEvents();
             }
         });
+        verifyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verifyEmail();
+            }
+        });
+
 //        buttonDiscard.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -112,13 +121,7 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
         // buttonChangePass.setOnClickListener {changePassword(it)}
-//        verifyText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                verifyEmail();
-//            }
-//        });
-        //        buttonEdit.setOnClickListener(new View.OnClickListener() {
+        // buttonEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                editProfile();
@@ -220,6 +223,29 @@ public class ProfileFragment extends Fragment {
         startActivity(new Intent(getContext(), RegisteredEventsActivity.class));
     }
 
+    private void verifyEmail() {
+        // Send verification email to current user email address
+        if (currentUser != null) {
+            currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Verification email sent!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (e instanceof FirebaseTooManyRequestsException) {
+                        Toast.makeText(getContext(), "Verification email already sent!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
+    }
+
 //    private void editProfile() {
 //
 //        // Toggle button visibility
@@ -294,17 +320,6 @@ public class ProfileFragment extends Fragment {
 //
 //    }
 //
-//    private fun verifyEmail() {
-//        // Send verification email to current user email address
-//        currentUser?.sendEmailVerification()
-//                ?.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                Toast.makeText(this.context, "Verification email sent!", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this.context, "Error sending verification email!", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     //    private fun changePassword(view: View) {
 //        val action = ProfileFragmentDirections.actionUpdatePassword()
