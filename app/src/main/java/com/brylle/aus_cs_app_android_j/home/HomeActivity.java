@@ -2,8 +2,8 @@ package com.brylle.aus_cs_app_android_j.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.events.EventsFragment;
 import com.brylle.aus_cs_app_android_j.events.QRFragment;
-import com.brylle.aus_cs_app_android_j.events.QRScanActivity;
 import com.brylle.aus_cs_app_android_j.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -60,6 +59,23 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_about:
+                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /* Action functions */
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -85,5 +101,7 @@ public class HomeActivity extends FragmentActivity {
             return false;
         }
     };
+
+
 
 }
