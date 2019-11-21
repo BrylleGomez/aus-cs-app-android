@@ -72,6 +72,7 @@ public class EventsFragment extends Fragment {
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    Log.d("EventsFragment", "Fetched event list: " + queryDocumentSnapshots.toString());
                     for (DocumentSnapshot document : queryDocumentSnapshots) {      // Iterate through all fetched events
                         // Store info of each fetched event in temp variable
                         @NonNull int eventId = document.getLong("event_id").intValue();
@@ -92,7 +93,7 @@ public class EventsFragment extends Fragment {
                                         endTime
                                 )
                         );
-                        Log.d("EventsFragment", document.getString("event_name") + "added!");
+                        Log.d("EventsFragment", document.getString("event_name") + " added!");
                     }
 
                     // set up recycler view
