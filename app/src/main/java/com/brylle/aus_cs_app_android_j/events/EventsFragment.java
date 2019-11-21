@@ -72,14 +72,14 @@ public class EventsFragment extends Fragment {
                 @Override
                 public void onSuccess(QuerySnapshot fetchedEvents) {
 
-                for (DocumentSnapshot fetchedEvent : fetchedEvents) {       // Iterate through all fetched events
-                    addFetchedEventToArrayList(fetchedEvent);
-                }
-
-                // load recycler view from adapter
-                loadRecyclerView();
-
+                    for (DocumentSnapshot fetchedEvent : fetchedEvents) {       // Iterate through all fetched events
+                        addFetchedEventToArrayList(fetchedEvent);
                     }
+
+                    // load recycler view from adapter
+                    loadRecyclerView();
+
+                }
 
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -229,19 +229,6 @@ public class EventsFragment extends Fragment {
         eventsView.setLayoutManager(new LinearLayoutManager(getContext()));
         eventsView.setAdapter(eventsAdapter);
 
-    }
-
-    class LoadEvents extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
     }
 
 }
