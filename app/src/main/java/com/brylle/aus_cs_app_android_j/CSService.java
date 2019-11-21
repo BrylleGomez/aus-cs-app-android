@@ -6,10 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.brylle.aus_cs_app_android_j.home.HomeActivity;
 import com.google.firebase.firestore.CollectionReference;
@@ -97,7 +99,7 @@ public class CSService extends Service {
         // create the notification and set its data
         Notification notification =
                 new Notification.Builder(this, "Channel_ID")
-                        .setSmallIcon(icon)
+                        .setSmallIcon(R.drawable.ic_icon_notif)
                         .setTicker(tickerText)
                         .setContentTitle(contentTitle)
                         .setContentText(contentText)
@@ -109,5 +111,6 @@ public class CSService extends Service {
         final int NOTIFICATION_ID = 1;
         manager.notify(NOTIFICATION_ID, notification);
     }
+
 
 }
