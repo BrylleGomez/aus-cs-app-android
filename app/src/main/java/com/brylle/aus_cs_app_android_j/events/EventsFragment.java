@@ -1,6 +1,5 @@
 package com.brylle.aus_cs_app_android_j.events;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +29,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -113,12 +113,14 @@ public class EventsFragment extends Fragment {
         // Add this event object to the events array list
 
         // Store info of each fetched event in temp variable
-        @NonNull int eventId = fetchedEvent.getLong("event_id").intValue();
-        String eventName = fetchedEvent.getString("event_name");
-        String startDate = fetchedEvent.getString("start_date");
-        String endDate = fetchedEvent.getString("end_date");
-        String startTime = fetchedEvent.getString("start_time");
-        String endTime = fetchedEvent.getString("end_time");
+        @NonNull int eventId = fetchedEvent.getLong(AppUtils.KEY_EVENT_ID).intValue();
+        String eventName = fetchedEvent.getString(AppUtils.KEY_EVENT_NAME);
+        GeoPoint eventCoords = fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS);
+        String eventLocation = fetchedEvent.getString(AppUtils.KEY_EVENT_LOCATION);
+        String startDate = fetchedEvent.getString(AppUtils.KEY_START_DATE);
+        String endDate = fetchedEvent.getString(AppUtils.KEY_END_DATE);
+        String startTime = fetchedEvent.getString(AppUtils.KEY_START_DATE);
+        String endTime = fetchedEvent.getString(AppUtils.KEY_END_TIME);
 
         // Create an Event object with the retrieved event info (in temp variables)
         // Add created Event object to the container
@@ -126,13 +128,15 @@ public class EventsFragment extends Fragment {
                 new Event(
                         eventId,
                         eventName,
+                        eventCoords,
+                        eventLocation,
                         startDate,
                         endDate,
                         startTime,
                         endTime
                 )
         );
-        Log.d("EventsFragment", fetchedEvent.getString("event_name") + "added!");
+        Log.d("EventsFragment", fetchedEvent.toString() + " added!");
 
     }
 
@@ -198,6 +202,8 @@ public class EventsFragment extends Fragment {
                                 final HashMap<String,Object> eventEntry = new HashMap<>();
                                 eventEntry.put(AppUtils.KEY_EVENT_ID, eventSnapshot.getLong(AppUtils.KEY_EVENT_ID));
                                 eventEntry.put(AppUtils.KEY_EVENT_NAME, eventSnapshot.getString(AppUtils.KEY_EVENT_NAME));
+                                eventEntry.put(AppUtils.KEY_EVENT_COORDS, eventSnapshot.getGeoPoint(AppUtils.KEY_EVENT_COORDS));
+                                eventEntry.put(AppUtils.KEY_EVENT_LOCATION, eventSnapshot.getString(AppUtils.KEY_EVENT_LOCATION));
                                 eventEntry.put(AppUtils.KEY_START_DATE, eventSnapshot.getString(AppUtils.KEY_START_DATE));
                                 eventEntry.put(AppUtils.KEY_END_DATE, eventSnapshot.getString(AppUtils.KEY_END_DATE));
                                 eventEntry.put(AppUtils.KEY_START_TIME, eventSnapshot.getString(AppUtils.KEY_START_TIME));
@@ -242,6 +248,7 @@ public class EventsFragment extends Fragment {
             }
         });
         eventsView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         eventsView.setAdapter(eventsAdapter);
 
     }

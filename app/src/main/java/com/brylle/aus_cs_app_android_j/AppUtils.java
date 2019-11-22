@@ -19,6 +19,8 @@ public class AppUtils {
     public static String KEY_END_TIME = "end_time";
     public static String KEY_EVENT_ID = "event_id";
     public static String KEY_EVENT_NAME = "event_name";
+    public static String KEY_EVENT_LOCATION = "event_location";
+    public static String KEY_EVENT_COORDS = "event_coords";
     public static String KEY_REGISTERED_STUDENTS = "registered_students";
     public static String KEY_START_DATE = "start_date";
     public static String KEY_START_TIME = "start_time";

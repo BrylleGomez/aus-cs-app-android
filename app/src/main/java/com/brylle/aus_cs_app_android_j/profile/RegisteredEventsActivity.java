@@ -27,6 +27,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -141,6 +142,8 @@ public class RegisteredEventsActivity extends AppCompatActivity {
         // retrieve event details from the hashmap and store in temp variables
         int tempEventID = ((Long) eventDetails.get("event_id")).intValue();
         String tempEventName = (String) eventDetails.get(AppUtils.KEY_EVENT_NAME);
+        GeoPoint tempEventCoords = (GeoPoint) eventDetails.get(AppUtils.KEY_EVENT_COORDS);
+        String tempEventLocation = (String) eventDetails.get(AppUtils.KEY_EVENT_LOCATION);
         String tempStartDate = (String) eventDetails.get(AppUtils.KEY_START_DATE);
         String tempEndDate = (String) eventDetails.get(AppUtils.KEY_END_DATE);
         String tempStartTime = (String) eventDetails.get(AppUtils.KEY_START_TIME);
@@ -150,6 +153,8 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                 new Event(
                         tempEventID,
                         tempEventName,
+                        tempEventCoords,
+                        tempEventLocation,
                         tempStartDate,
                         tempEndDate,
                         tempStartTime,
@@ -187,10 +192,13 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                             final HashMap<String,Object> eventEntry = new HashMap<>();
                             eventEntry.put(AppUtils.KEY_EVENT_ID, fetchedEvent.getLong(AppUtils.KEY_EVENT_ID));
                             eventEntry.put(AppUtils.KEY_EVENT_NAME, fetchedEvent.getString(AppUtils.KEY_EVENT_NAME));
+                            eventEntry.put(AppUtils.KEY_EVENT_COORDS, fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS));
+                            eventEntry.put(AppUtils.KEY_EVENT_LOCATION, fetchedEvent.getString(AppUtils.KEY_EVENT_LOCATION));
                             eventEntry.put(AppUtils.KEY_START_DATE, fetchedEvent.getString(AppUtils.KEY_START_DATE));
                             eventEntry.put(AppUtils.KEY_END_DATE, fetchedEvent.getString(AppUtils.KEY_END_DATE));
                             eventEntry.put(AppUtils.KEY_START_TIME, fetchedEvent.getString(AppUtils.KEY_START_TIME));
                             eventEntry.put(AppUtils.KEY_END_TIME, fetchedEvent.getString(AppUtils.KEY_END_TIME));
+                            // add hashmap to registered_events of user
                             document.getReference().update(AppUtils.KEY_REGISTERED_EVENTS, FieldValue.arrayRemove(eventEntry))
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
