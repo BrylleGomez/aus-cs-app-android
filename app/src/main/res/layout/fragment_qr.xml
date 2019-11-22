@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F7F7F7"
     android:orientation="vertical"
-    tools:context=".QRFragment">
+    tools:context=".events.QRFragment">
 
     <Button
         android:id="@+id/qr_button_scan"
