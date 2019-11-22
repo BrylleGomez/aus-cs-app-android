@@ -19,6 +19,7 @@ import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.events.Event;
 import com.brylle.aus_cs_app_android_j.home.AboutActivity;
+import com.brylle.aus_cs_app_android_j.home.HomeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,6 +93,14 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                     });
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+
+        startActivity(intent);
     }
 
     /* Helper Functions */

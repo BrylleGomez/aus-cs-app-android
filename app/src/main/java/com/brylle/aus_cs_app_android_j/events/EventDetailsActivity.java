@@ -124,6 +124,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("EventsFragment", "(1) User has successfully registered for event " + eventID + "!");
                                                 Toast.makeText(getApplicationContext(), "Successfully registered for " + eventName, Toast.LENGTH_LONG).show();
+                                                EventDetailsActivity.this.finish();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

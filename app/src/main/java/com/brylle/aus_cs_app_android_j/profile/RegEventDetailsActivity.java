@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
 import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.events.Event;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.TimerTask;
 
 public class RegEventDetailsActivity extends AppCompatActivity {
 
@@ -96,6 +98,7 @@ public class RegEventDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 unregisterEvent(eventID);
+
             }
         });
 
@@ -125,6 +128,14 @@ public class RegEventDetailsActivity extends AppCompatActivity {
                             Log.d("RegEventsFragment", "User has successfully unregistered for event " + eventID + "!");
                             Toast.makeText(getApplicationContext(), "Successfully cancelled registration for " + eventName, Toast.LENGTH_LONG).show();
 
+                            new Timer().schedule(
+                                    new TimerTask(){
+
+                                        @Override
+                                        public void run(){
+                                            startActivity(new Intent(getApplicationContext(), RegisteredEventsActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                                        }
+                                    }, 1000);
                         }
                     }
                 });
