@@ -79,22 +79,8 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                                 }
                             }
 
-                            // set up recycler view
-                            regEventsAdapter = new RegEventAdapter(regEventsList, new RegEventAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(Event event) {
-                                    unregisterEvent(event);
-                                }
-                            });
-                            regEventsView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            regEventsView.setAdapter(regEventsAdapter);
-
-                            // if user did not register for any events, display message
-                            if (regEventsList.isEmpty()) {
-                                messageFrame.setVisibility(View.VISIBLE);
-                            } else {
-                                messageFrame.setVisibility(View.GONE);
-                            }
+                            // load recycler view from adapter
+                            loadRecyclerView();
 
                         }
                     })
@@ -142,7 +128,8 @@ public class RegisteredEventsActivity extends AppCompatActivity {
         // retrieve event details from the hashmap and store in temp variables
         int tempEventID = ((Long) eventDetails.get("event_id")).intValue();
         String tempEventName = (String) eventDetails.get(AppUtils.KEY_EVENT_NAME);
-        GeoPoint tempEventCoords = (GeoPoint) eventDetails.get(AppUtils.KEY_EVENT_COORDS);
+        double tempEventLatitude = ((GeoPoint) eventDetails.get(AppUtils.KEY_EVENT_COORDS)).getLatitude();
+        double tempEventLongitude = ((GeoPoint) eventDetails.get(AppUtils.KEY_EVENT_COORDS)).getLongitude();
         String tempEventLocation = (String) eventDetails.get(AppUtils.KEY_EVENT_LOCATION);
         String tempStartDate = (String) eventDetails.get(AppUtils.KEY_START_DATE);
         String tempEndDate = (String) eventDetails.get(AppUtils.KEY_END_DATE);
@@ -153,7 +140,8 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                 new Event(
                         tempEventID,
                         tempEventName,
-                        tempEventCoords,
+                        tempEventLatitude,
+                        tempEventLongitude,
                         tempEventLocation,
                         tempStartDate,
                         tempEndDate,
@@ -204,8 +192,6 @@ public class RegisteredEventsActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d("EventsFragment", "1: User has unsuccessfully registered for event " + fetchedEvent.getId() + "!");
-                                            // Update UI recycler view
-                                            refreshActivity();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -230,6 +216,39 @@ public class RegisteredEventsActivity extends AppCompatActivity {
     private void refreshActivity() {
         finish();
         startActivity(getIntent());
+    }
+
+    private void loadRecyclerView() {
+
+        // set up recycler view
+        regEventsAdapter = new RegEventAdapter(regEventsList, new RegEventAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Event event) {
+                // Bind a click listener to the reyclerview item
+                // unregisterEvent(event);     // TO BE REMOVED~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                // create intent, pass clicked event as parcelable extra, and start activity
+                Intent intent = new Intent(getApplicationContext(), RegEventDetailsActivity.class);
+                intent.putExtra("eventID", event.getID());
+                intent.putExtra("eventName", event.getName());
+                intent.putExtra("eventLatitude", event.getLatitude());
+                intent.putExtra("eventLongitude", event.getLocation());
+                intent.putExtra("eventLocation", event.getLocation());
+                intent.putExtra("eventDates", event.getDates());
+                intent.putExtra("eventTimings", event.getTimes());
+                startActivity(intent);
+            }
+        });
+        regEventsView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        regEventsView.setAdapter(regEventsAdapter);
+
+        // if user did not register for any events, display message
+        if (regEventsList.isEmpty()) {
+            messageFrame.setVisibility(View.VISIBLE);
+        } else {
+            messageFrame.setVisibility(View.GONE);
+        }
+
     }
 
 }

@@ -10,7 +10,8 @@ public class Event {
     // the following private members are the same as the fields of an event entry in a database
     private int event_id;
     private String event_name;
-    private GeoPoint event_coords;
+    private double event_latitude;
+    private double event_longitude;
     private String event_location;
     private String start_date;
     private String end_date;
@@ -21,7 +22,8 @@ public class Event {
     public Event(
             int event_id,
             String event_name,
-            GeoPoint event_coords,
+            double event_latitude,
+            double event_longitude,
             String event_location,
             String start_date,
             String end_date,
@@ -29,7 +31,8 @@ public class Event {
             String end_time) {
         this.event_id = event_id;
         this.event_name = event_name;
-        this.event_coords = event_coords;
+        this.event_latitude = event_latitude;
+        this.event_longitude = event_longitude;
         this.event_location = event_location;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -39,7 +42,7 @@ public class Event {
 
     // prints a log output of the event object
     public void print() {
-        Log.d("EventClass", this.event_name + "\nDate: " + this.start_date + " - " + this.end_date + "\nTime: " + this.start_time + " - " + this.end_time);
+        Log.d("Debug", this.event_name + "\nDate: " + this.start_date + " - " + this.end_date + "\nTime: " + this.start_time + " - " + this.end_time);
     }
 
     // returns the event_id field of this class
@@ -62,10 +65,15 @@ public class Event {
         return "Time: " + this.start_time + " - " + this.end_time;
     }
 
-    public GeoPoint getCoordinates() {
-        return this.event_coords;
+    public double getLatitude() {
+        return this.event_latitude;
     }
 
+    public double getLongitude() {
+        return this.event_longitude;
+    }
+
+    // returns the event_location of this class
     public String getLocation() {
         return this.event_location;
     }

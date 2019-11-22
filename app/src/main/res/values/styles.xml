@@ -26,7 +26,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
-
     </style>
 
 </resources>

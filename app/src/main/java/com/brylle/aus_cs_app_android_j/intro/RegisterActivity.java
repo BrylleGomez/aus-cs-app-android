@@ -92,6 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /* Helper Functions */
+
     private void hideProgress() {
         // hides the progress bar
         progressBar.setVisibility(View.GONE);

@@ -1,5 +1,6 @@
 package com.brylle.aus_cs_app_android_j.events;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,13 +99,11 @@ public class EventsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Log.d("Menu", "onCreate called and set hasoptionsmenu as true!");
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        Log.d("Menu", "Menu created from fragment!");
     }
 
     /* Helper Functions */
@@ -115,7 +115,8 @@ public class EventsFragment extends Fragment {
         // Store info of each fetched event in temp variable
         @NonNull int eventId = fetchedEvent.getLong(AppUtils.KEY_EVENT_ID).intValue();
         String eventName = fetchedEvent.getString(AppUtils.KEY_EVENT_NAME);
-        GeoPoint eventCoords = fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS);
+        double eventLatitude = fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS).getLatitude();
+        double eventLongitude = fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS).getLongitude();
         String eventLocation = fetchedEvent.getString(AppUtils.KEY_EVENT_LOCATION);
         String startDate = fetchedEvent.getString(AppUtils.KEY_START_DATE);
         String endDate = fetchedEvent.getString(AppUtils.KEY_END_DATE);
@@ -128,7 +129,8 @@ public class EventsFragment extends Fragment {
                 new Event(
                         eventId,
                         eventName,
-                        eventCoords,
+                        eventLatitude,
+                        eventLongitude,
                         eventLocation,
                         startDate,
                         endDate,
@@ -140,115 +142,28 @@ public class EventsFragment extends Fragment {
 
     }
 
-    private void registerEvent(Event event) {
-        // Register a user to an event when the "Register" button is clicked
-        // (1) Adds a user to an event's registered_students field in Firebase
-        // and (2) adds an event to a user's registered_events in Firebase
-        Toast.makeText(getContext(), "Retrieving event " + event.getID(), Toast.LENGTH_LONG).show();
-        final int eventID = event.getID();
-
-
-        // (1) Add user to event's registered_students
-        if (currentUser != null) {
-            firestoreEventList.whereEqualTo(AppUtils.KEY_EVENT_ID, eventID)      // query: look for the event document that matches event id of clicked event
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot fetchedEvent : queryDocumentSnapshots) {   // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
-                                // final DocumentSnapshot eventSnapshot = fetchedEvent;
-                                // Update event's registered_students field with (email of) new student
-                                fetchedEvent.getReference().update(AppUtils.KEY_REGISTERED_STUDENTS, FieldValue.arrayUnion(currentUser.getEmail()))
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d("EventsFragment", "(1) User has successfully registered for event " + eventID + "!");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w("EventsFragment", "(1) Error registering user to event " + eventID + "!", e);
-                                            }
-                                        });
-
-                                // (2) Add event object to user's registered_events
-                                addEventToUserList(fetchedEvent);
-
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w("EventsFragment", "2: Error fetching user through query! ", e);
-                }
-            });
-        }
-
-    }
-
-    private void addEventToUserList(final DocumentSnapshot eventSnapshot) {
-        // add an event entry to a user's registered_events field in Firestore
-        // so user can keep track of which events he/she has registered for
-
-        if (currentUser != null) {      // Fetch user from database using query
-            firebaseFirestore.collection("users").whereEqualTo(AppUtils.KEY_EMAIL, currentUser.getEmail())      // query: look for user document in Firestore using email of current user
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot document : queryDocumentSnapshots) {      // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
-                                // create hashmap of event details
-                                final HashMap<String,Object> eventEntry = new HashMap<>();
-                                eventEntry.put(AppUtils.KEY_EVENT_ID, eventSnapshot.getLong(AppUtils.KEY_EVENT_ID));
-                                eventEntry.put(AppUtils.KEY_EVENT_NAME, eventSnapshot.getString(AppUtils.KEY_EVENT_NAME));
-                                eventEntry.put(AppUtils.KEY_EVENT_COORDS, eventSnapshot.getGeoPoint(AppUtils.KEY_EVENT_COORDS));
-                                eventEntry.put(AppUtils.KEY_EVENT_LOCATION, eventSnapshot.getString(AppUtils.KEY_EVENT_LOCATION));
-                                eventEntry.put(AppUtils.KEY_START_DATE, eventSnapshot.getString(AppUtils.KEY_START_DATE));
-                                eventEntry.put(AppUtils.KEY_END_DATE, eventSnapshot.getString(AppUtils.KEY_END_DATE));
-                                eventEntry.put(AppUtils.KEY_START_TIME, eventSnapshot.getString(AppUtils.KEY_START_TIME));
-                                eventEntry.put(AppUtils.KEY_END_TIME, eventSnapshot.getString(AppUtils.KEY_END_TIME));
-                                // add hashmap to registered_events of user
-                                document.getReference().update(AppUtils.KEY_REGISTERED_EVENTS, FieldValue.arrayUnion(eventEntry))
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d("EventsFragment", "(2) User has successfully registered for event " + eventSnapshot.getLong(AppUtils.KEY_EVENT_ID) + "!");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w("EventsFragment", "(2) Error registering user to event " + eventSnapshot.getLong(AppUtils.KEY_EVENT_ID) + "!", e);
-                                            }
-                                        });
-
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("EventsFragment", "1: Error fetching user through query! ", e);
-                        }
-                    });
-        }
-
-    }
-
     private void loadRecyclerView() {
 
         // Set up recycler view
         eventsAdapter = new EventAdapter(eventsList, new EventAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Event event) {
-                // Bind a click listener to the "Register Button"
-                // of each recycler view item
-                registerEvent(event);
+                // Bind a click listener to the reyclerview item
+                // registerEvent(event);   // TO BE REMOVED~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                // create intent, pass event object members as extras, and start activity
+                Intent intent = new Intent(getContext(), EventDetailsActivity.class);
+                intent.putExtra("eventID", event.getID());
+                intent.putExtra("eventName", event.getName());
+                intent.putExtra("eventDates", event.getDates());
+                intent.putExtra("eventTimings", event.getTimes());
+                intent.putExtra("eventLocation", event.getLocation());
+                intent.putExtra("eventLatitude", event.getLatitude());
+                intent.putExtra("eventLongitude", event.getLongitude());
+                startActivity(intent);
             }
         });
         eventsView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         eventsView.setAdapter(eventsAdapter);
 
     }

@@ -1,8 +1,6 @@
 package com.brylle.aus_cs_app_android_j.events;
 
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 
@@ -51,21 +49,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     // Inner ViewHolder Class for Event
     public class EventViewHolder extends RecyclerView.ViewHolder {
         TextView nameView, dateView, timeView;
-        Button button;
-
         public EventViewHolder(View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.fragment_events_event_viewholder_name);
             dateView = itemView.findViewById(R.id.fragment_events_event_viewholder_date);
             timeView = itemView.findViewById(R.id.fragment_events_event_viewholder_time);
-            button = itemView.findViewById(R.id.fragment_events_event_viewholder_register);  // test
         }
 
         public void bind(final Event event, final OnItemClickListener clickListener) {
             nameView.setText(event.getName());
             dateView.setText(event.getDates());
             timeView.setText(event.getTimes());
-            button.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     clickListener.onItemClick(event);
