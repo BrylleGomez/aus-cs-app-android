@@ -96,31 +96,6 @@ public class RegisteredEventsActivity extends AppCompatActivity {
 
     /* Helper Functions */
 
-    private void unregisterEvent(Event event) {
-        // Unregister a user from an event when the "Unregister" button is clicked
-        // (1) Removes a user from an event's registered_students field in Firebase
-        // and (2) removes an event from a user's registered_events field in Firebase
-
-        // (1) Remove user from event's registered_students array
-        firestoreEventList.whereEqualTo(AppUtils.KEY_EVENT_ID, event.getID())      // query: look for event document that matches event id of clicked event
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (final DocumentSnapshot fetchedEvent : queryDocumentSnapshots) {   // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
-                            // final DocumentSnapshot eventSnapshot = document;
-                            // Remove student from event's registered_students array
-                            removeStudentFromEventList(fetchedEvent);
-
-                            // (2) Remove event object to user's registered_events
-                            removeEventFromUserList(fetchedEvent);
-
-                        }
-                    }
-                });
-
-    }
-
     private void addFetchedEventToArrayList(HashMap<String, Object> eventDetails) {
         // Create an Event object with the retrieved event info (in temp variables)
         // Add created Event object to the container
@@ -151,91 +126,23 @@ public class RegisteredEventsActivity extends AppCompatActivity {
         );
     }
 
-    private void removeStudentFromEventList(final DocumentSnapshot fetchedEvent) {
-
-        fetchedEvent.getReference().update(AppUtils.KEY_REGISTERED_STUDENTS, FieldValue.arrayRemove(currentUser.getEmail()))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("EventsFragment", "2: User has successfully unregistered from event " + fetchedEvent.getId() + "!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("EventsFragment", "2: Error unregistering user from event " + fetchedEvent.getId() + "!", e);
-                    }
-                });
-
-    }
-
-    private void removeEventFromUserList(final DocumentSnapshot fetchedEvent) {
-
-        firebaseFirestore.collection("users").whereEqualTo(AppUtils.KEY_EMAIL, currentUser.getEmail())      // query: look for user document that matches email of current user
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {      // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
-                            final HashMap<String,Object> eventEntry = new HashMap<>();
-                            eventEntry.put(AppUtils.KEY_EVENT_ID, fetchedEvent.getLong(AppUtils.KEY_EVENT_ID));
-                            eventEntry.put(AppUtils.KEY_EVENT_NAME, fetchedEvent.getString(AppUtils.KEY_EVENT_NAME));
-                            eventEntry.put(AppUtils.KEY_EVENT_COORDS, fetchedEvent.getGeoPoint(AppUtils.KEY_EVENT_COORDS));
-                            eventEntry.put(AppUtils.KEY_EVENT_LOCATION, fetchedEvent.getString(AppUtils.KEY_EVENT_LOCATION));
-                            eventEntry.put(AppUtils.KEY_START_DATE, fetchedEvent.getString(AppUtils.KEY_START_DATE));
-                            eventEntry.put(AppUtils.KEY_END_DATE, fetchedEvent.getString(AppUtils.KEY_END_DATE));
-                            eventEntry.put(AppUtils.KEY_START_TIME, fetchedEvent.getString(AppUtils.KEY_START_TIME));
-                            eventEntry.put(AppUtils.KEY_END_TIME, fetchedEvent.getString(AppUtils.KEY_END_TIME));
-                            // add hashmap to registered_events of user
-                            document.getReference().update(AppUtils.KEY_REGISTERED_EVENTS, FieldValue.arrayRemove(eventEntry))
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("EventsFragment", "1: User has unsuccessfully registered for event " + fetchedEvent.getId() + "!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("EventsFragment", "1: Error unregistering user to event " + fetchedEvent.getId() + "!", e);
-                                        }
-                                    });
-
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("EventsFragment", "1: Error fetching user through query! ", e);
-                    }
-                });
-
-    }
-
-    private void refreshActivity() {
-        finish();
-        startActivity(getIntent());
-    }
-
     private void loadRecyclerView() {
 
         // set up recycler view
         regEventsAdapter = new RegEventAdapter(regEventsList, new RegEventAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Event event) {
-                // Bind a click listener to the reyclerview item
-                // unregisterEvent(event);     // TO BE REMOVED~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                // Bind a click listener to the recyclerview item
 
                 // create intent, pass clicked event as parcelable extra, and start activity
                 Intent intent = new Intent(getApplicationContext(), RegEventDetailsActivity.class);
                 intent.putExtra("eventID", event.getID());
                 intent.putExtra("eventName", event.getName());
-                intent.putExtra("eventLatitude", event.getLatitude());
-                intent.putExtra("eventLongitude", event.getLocation());
-                intent.putExtra("eventLocation", event.getLocation());
                 intent.putExtra("eventDates", event.getDates());
                 intent.putExtra("eventTimings", event.getTimes());
+                intent.putExtra("eventLocation", event.getLocation());
+                intent.putExtra("eventLatitude", event.getLatitude());
+                intent.putExtra("eventLongitude", event.getLongitude());
                 startActivity(intent);
             }
         });

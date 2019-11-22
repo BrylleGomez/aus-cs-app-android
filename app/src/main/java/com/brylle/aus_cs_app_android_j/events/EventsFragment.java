@@ -149,7 +149,6 @@ public class EventsFragment extends Fragment {
             @Override
             public void onItemClick(Event event) {
                 // Bind a click listener to the reyclerview item
-                // registerEvent(event);   // TO BE REMOVED~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
                 // create intent, pass event object members as extras, and start activity
                 Intent intent = new Intent(getContext(), EventDetailsActivity.class);
