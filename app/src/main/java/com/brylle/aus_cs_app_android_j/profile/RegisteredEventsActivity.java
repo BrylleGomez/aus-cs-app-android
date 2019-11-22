@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +18,7 @@ import android.view.View;
 import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.events.Event;
+import com.brylle.aus_cs_app_android_j.home.AboutActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,8 +106,6 @@ public class RegisteredEventsActivity extends AppCompatActivity {
         }
 
     }
-
-
 
     /* Helper Functions */
 

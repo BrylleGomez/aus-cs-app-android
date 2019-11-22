@@ -10,27 +10,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".home.AboutActivity">
+        <activity android:name=".home.AboutActivity"
+            android:theme="@style/NoActionBarTheme">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-        <activity android:name=".profile.RegisteredEventsActivity" />
-        <activity android:name=".events.QRScanActivity" />
-        <activity android:name=".intro.ForgotPasswordActivity" />
-        <activity android:name=".home.HomeActivity" />
-        <activity android:name=".intro.RegisterActivity" />
-        <activity android:name=".intro.LoginActivity" />
-        <activity android:name=".intro.SplashActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+
+        </activity>
+        <activity android:name=".profile.RegisteredEventsActivity" />
+        <activity android:name=".events.QRScanActivity"
+            android:theme="@style/NoActionBarTheme"/>
+        <activity android:name=".intro.ForgotPasswordActivity" />
+        <activity android:name=".home.HomeActivity" />
+        <activity android:name=".intro.RegisterActivity"
+            android:theme="@style/NoActionBarTheme"/>
+        <activity android:name=".intro.LoginActivity"
+            android:theme="@style/NoActionBarTheme"/>
+        <activity android:name=".intro.SplashActivity"
+            android:theme="@style/NoActionBarTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data

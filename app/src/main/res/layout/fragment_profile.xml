@@ -71,8 +71,6 @@
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="38dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="New Display Name"
@@ -80,10 +78,11 @@
         android:textAllCaps="false"
         android:textSize="14sp"
         android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_textview_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profile_textview_name"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_textview_name"
         tools:targetApi="o" />
 
     <Button
@@ -232,8 +231,7 @@
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:text="Name: "
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -246,16 +244,14 @@
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
         android:text="@string/profile_textview_name_p"
         android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_textview_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profile_textview_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/profile_textview_name" />
 
     <Button
         android:id="@+id/profile_button_signout"
