@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+
 public class Event {
 
     // class to represent event entries in the events page of the app
@@ -55,6 +60,22 @@ public class Event {
         return this.event_name;
     }
 
+    public String getStartDate() {
+        return this.start_date;
+    }
+
+    public String getEndDate() {
+        return this.end_date;
+    }
+
+    public String getStartTime() {
+        return this.start_time;
+    }
+
+    public String getEndTime() {
+        return this.end_time;
+    }
+
     // returns a formatted string with the start and end dates of an event object
     public String getDates() {
         return "Date: " + this.start_date + " - " + this.end_date;
@@ -76,6 +97,25 @@ public class Event {
     // returns the event_location of this class
     public String getLocation() {
         return this.event_location;
+    }
+
+    // Comparator class to enable sorting event arraylists by start date
+    public static class EventStartDateComparator implements Comparator<Event> {
+        @Override
+        public int compare(Event event1, Event event2) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+            Date date1;
+            Date date2;
+            try {
+                // parse dates from text
+                date1 = dateFormat.parse(event1.getStartDate());
+                date2 = dateFormat.parse(event2.getStartDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
     }
 
 }

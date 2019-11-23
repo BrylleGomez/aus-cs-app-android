@@ -9,14 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
@@ -25,18 +23,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Objects;
 
 public class EventsFragment extends Fragment {
@@ -143,6 +135,9 @@ public class EventsFragment extends Fragment {
     }
 
     private void loadRecyclerView() {
+
+        // sort events array list according to start date
+        Collections.sort(eventsList, new Event.EventStartDateComparator());
 
         // Set up recycler view
         eventsAdapter = new EventAdapter(eventsList, new EventAdapter.OnItemClickListener() {
