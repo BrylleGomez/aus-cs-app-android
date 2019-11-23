@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -189,11 +190,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                     // add user to Firestore DB
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-
                     addUserToDatabase(user, firstnameString, lastnameString, mobileString);
-
                     Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     hideProgress();
+                    sendEmailVerification(user);    // send verification email
                     firebaseAuth.signOut();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
 
@@ -279,6 +279,29 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void sendEmailVerification(FirebaseUser currentUser) {
+        // Send verification email to current user email address
+        if (currentUser != null) {
+            currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Verification email sent!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (e instanceof FirebaseTooManyRequestsException) {
+                        Toast.makeText(getApplicationContext(), "Verification email already sent!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
     }
 
 }

@@ -58,7 +58,6 @@ public class ProfileFragment extends Fragment {
     private TextView phoneNumber;
     private TextView volunteerHours;
     private EditText editName;
-    private TextView verifyText;
 
     /* Initializer Functions */
 
@@ -93,7 +92,6 @@ public class ProfileFragment extends Fragment {
         phoneNumber = getView().findViewById(R.id.profile_textview_phone_p);
         volunteerHours = getView().findViewById(R.id.profile_textview_hours_p);
         editName = getView().findViewById(R.id.profile_plaintext_editname);
-        verifyText = getView().findViewById(R.id.profile_textview_email_verified);
 
         // Attach event listeners
         buttonSignout.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +103,6 @@ public class ProfileFragment extends Fragment {
         buttonRegisteredEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { seeRegisteredEvents();
-            }
-        });
-        verifyText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                verifyEmail();
             }
         });
 
@@ -144,11 +136,6 @@ public class ProfileFragment extends Fragment {
 
             // Retrieve email from Firebase Auth
             email.setText(currentUser.getEmail());
-            if (currentUser.isEmailVerified()) {
-                verifyText.setVisibility(View.INVISIBLE);
-            } else {
-                verifyText.setVisibility(View.VISIBLE);
-            }
 
             // Retrieve other user info from Firestore
             // Search for user document from Firestore/users through query
@@ -221,29 +208,6 @@ public class ProfileFragment extends Fragment {
 
     private void seeRegisteredEvents() {
         startActivity(new Intent(getContext(), RegisteredEventsActivity.class));
-    }
-
-    private void verifyEmail() {
-        // Send verification email to current user email address
-        if (currentUser != null) {
-            currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Verification email sent!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    if (e instanceof FirebaseTooManyRequestsException) {
-                        Toast.makeText(getContext(), "Verification email already sent!", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-        }
     }
 
 //    private void editProfile() {

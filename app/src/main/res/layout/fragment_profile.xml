@@ -200,19 +200,6 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_textview_name_p" />
 
     <TextView
-        android:id="@+id/profile_textview_email_verified"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:gravity="center"
-        android:text="(click to verify)"
-        android:textColor="@color/colorAccent"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_textview_email_p"
-        app:layout_constraintTop_toBottomOf="@+id/profile_textview_email_p" />
-
-    <TextView
         android:id="@+id/profile_textview_email"
         android:layout_width="wrap_content"
         android:layout_height="19dp"

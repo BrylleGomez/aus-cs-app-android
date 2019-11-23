@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends Activity {
 
@@ -79,8 +80,14 @@ public class LoginActivity extends Activity {
     protected void onStart() {
         super.onStart();
         //If a user is already logged in, jumps to HomeActivity
-        if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            if (!currentUser.isEmailVerified()) {
+                firebaseAuth.signOut();
+                Toast.makeText(getApplicationContext(), "Login failed! Email not verified.", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            }
         }
     }
 
@@ -119,14 +126,27 @@ public class LoginActivity extends Activity {
             return;
         }
 
+
+
         // Login to Firebase
         firebaseAuth.signInWithEmailAndPassword(usernameString,passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     hideProgress();
-                    Log.d("LoginActivity", "Login Successful");
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                    if (currentUser != null) {
+                        if (!currentUser.isEmailVerified()) {
+                            firebaseAuth.signOut();
+                            // Clear entered credentials
+                            username.setText("");
+                            password.setText("");
+                            Toast.makeText(getApplicationContext(), "Login failed! Email not verified.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                            Log.d("LoginActivity", "Login Successful");
+                        }
+                    }
                 } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                     hideProgress();
                     Toast.makeText(getApplicationContext(), "Login failed! Invalid credentials...", Toast.LENGTH_SHORT).show();
