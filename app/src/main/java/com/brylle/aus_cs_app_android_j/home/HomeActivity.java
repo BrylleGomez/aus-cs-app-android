@@ -1,5 +1,7 @@
 package com.brylle.aus_cs_app_android_j.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +16,10 @@ import androidx.fragment.app.FragmentManager;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.events.EventsFragment;
 import com.brylle.aus_cs_app_android_j.events.QRFragment;
+import com.brylle.aus_cs_app_android_j.intro.LoginActivity;
 import com.brylle.aus_cs_app_android_j.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -74,6 +78,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.menu_about:
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
                 return true;
+            case R.id.menu_signout:
+                signoutUser();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -105,6 +112,22 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    private void signoutUser() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        Log.d("Debug", "Test1");
+        builder.setTitle("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    }
+                })
+                .setNegativeButton("Cancel", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 
 
 }

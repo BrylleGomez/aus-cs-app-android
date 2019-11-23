@@ -82,6 +82,7 @@ public class LoginActivity extends Activity {
         //If a user is already logged in, jumps to HomeActivity
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
+            // if email of user is not verified yet, do not allow log in
             if (!currentUser.isEmailVerified()) {
                 firebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(), "Login failed! Email not verified.", Toast.LENGTH_SHORT).show();
@@ -125,8 +126,6 @@ public class LoginActivity extends Activity {
             password.requestFocus();
             return;
         }
-
-
 
         // Login to Firebase
         firebaseAuth.signInWithEmailAndPassword(usernameString,passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
