@@ -13,20 +13,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.brylle.aus_cs_app_android_j.AppUtils;
 import com.brylle.aus_cs_app_android_j.R;
 import com.brylle.aus_cs_app_android_j.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends Activity {
 
     /* Variables */
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private EditText username;
     private EditText password;
     private Button buttonLogin;
@@ -43,6 +50,7 @@ public class LoginActivity extends Activity {
 
         // Retrieve instance of firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         // Create form objects
         username = findViewById(R.id.login_plaintext_username);
@@ -59,7 +67,7 @@ public class LoginActivity extends Activity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginUser();
+                loginValidation();
             }
         });
         signupText.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +112,7 @@ public class LoginActivity extends Activity {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void loginUser() {
+    private void loginValidation() {
 
         showProgress();
 
@@ -127,7 +135,37 @@ public class LoginActivity extends Activity {
             return;
         }
 
-        // Login to Firebase
+        // Check if credentials belong to a normal user; if not, disallow login
+        // Normal users and admin users pertain to different database structures
+        // Allowing this interchange would result to the app crashing as parts of the code
+        // request Firebase Firestore fields that are non-existent (either for admin or for user)
+        firebaseFirestore.collection("users").whereEqualTo(AppUtils.KEY_EMAIL, usernameString)      // query: look for user document in Firestore using email of current user
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot fetchedUser : queryDocumentSnapshots) {      // loop through every database hit, SHOULD ONLY BE ONE MATCH THO
+                            boolean isAdmin = fetchedUser.getBoolean(AppUtils.KEY_IS_ADMIN);
+                            if (!isAdmin) {      // if user is not admin, proceed to login
+                                loginUser(usernameString, passwordString);
+                            } else {            // if user is admin, login denied
+                                hideProgress();
+                                Toast.makeText(getApplicationContext(), "Login failed! Invalid credentials...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("EventsFragment", "1: Error fetching user through query! ", e);
+                    }
+                });
+
+    }
+
+    private void loginUser(String usernameString, String passwordString) {
+
         firebaseAuth.signInWithEmailAndPassword(usernameString,passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

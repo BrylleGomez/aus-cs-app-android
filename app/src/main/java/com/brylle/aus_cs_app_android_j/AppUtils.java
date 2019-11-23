@@ -13,6 +13,7 @@ public class AppUtils {
     public static String KEY_VOLUNTEER_HOURS = "volunteer_hours";
     public static String KEY_REGISTERED_EVENTS = "registered_events";
     public static String KEY_VOLUNTEERED_EVENTS = "volunteered_events";
+    public static String KEY_IS_ADMIN = "is_admin";
     // Firestore Keys of /metadata/counts
     public static String KEY_USER_COUNT = "user_count";
     // Firestore Keys of /events/event_x

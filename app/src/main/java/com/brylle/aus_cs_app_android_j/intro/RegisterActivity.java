@@ -223,11 +223,6 @@ public class RegisterActivity extends AppCompatActivity {
         String email = user.getEmail();
         String joinDate = AppUtils.epochToDate(user.getMetadata().getCreationTimestamp());
 
-//        // Append extension to supplied mobile number
-//        String mobileExt = "+97150";
-//        String completeMobile = mobileExt + mobile;
-//        Toast.makeText(getApplicationContext(),"Mobile: " + completeMobile, Toast.LENGTH_SHORT).show();
-
         // Append extension to supplied mobile number
         String mobileExt = "+9715";
         String mobileNum = mobile;
@@ -240,8 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
         entry.put(AppUtils.KEY_EMAIL, email);
         entry.put(AppUtils.KEY_MOBILE_NUMBER, completeMobile);
         entry.put(AppUtils.KEY_VOLUNTEER_HOURS, 0);
-
-        Toast.makeText(getApplicationContext(),"Mobile: " + completeMobile, Toast.LENGTH_SHORT).show();
+        entry.put(AppUtils.KEY_IS_ADMIN, false);
 
         firestoreUserCount.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -255,16 +249,16 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(),"User added to Firebase", Toast.LENGTH_SHORT).show();
+                                Log.d("RegisterActivity","User added to Firebase");
                                 // Increment metadata/counts/user_count by 1 due to new user
                                 firestoreUserCount.update(AppUtils.KEY_USER_COUNT, userCount).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getApplicationContext(),"Failed to update user count!", Toast.LENGTH_SHORT).show();
+                                        Log.d("RegisterActivity","User added to Firebase");
                                     }
                                 });
                             } else {
-                                Toast.makeText(getApplicationContext(),"Failed to add user to Firebase", Toast.LENGTH_SHORT).show();
+                                Log.d("RegisterActivity","Failed to add user to Firebase!");
                             }
                         }
                     });
