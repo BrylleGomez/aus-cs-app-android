@@ -12,6 +12,7 @@ public class AppUtils {
     public static String KEY_MOBILE_NUMBER = "mobile_number";
     public static String KEY_VOLUNTEER_HOURS = "volunteer_hours";
     public static String KEY_REGISTERED_EVENTS = "registered_events";
+    public static String KEY_VOLUNTEERED_EVENTS = "volunteered_events";
     // Firestore Keys of /metadata/counts
     public static String KEY_USER_COUNT = "user_count";
     // Firestore Keys of /events/event_x
@@ -24,6 +25,8 @@ public class AppUtils {
     public static String KEY_REGISTERED_STUDENTS = "registered_students";
     public static String KEY_START_DATE = "start_date";
     public static String KEY_START_TIME = "start_time";
+    public static String KEY_EVENT_HOURS = "event_hours";
+    public static String KEY_PAST_VOLUNTEERS = "past_volunteers";
 
     public static String epochToDate(Long time) {
         return new SimpleDateFormat("MMM dd, yyyy", Locale.US).format(new Date(time));
