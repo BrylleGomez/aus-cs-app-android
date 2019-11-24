@@ -124,7 +124,7 @@ public class QRScanActivity extends AppCompatActivity implements ZXingScannerVie
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d("QRScanActivity", "(1) User has successfully attended the event " + eventName + "!");
-                            Toast.makeText(getApplicationContext(), "Successfully attended for " + eventName, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Attendance successfully taken!", Toast.LENGTH_LONG).show();
 
                             //4. Fetch user, add HRS to volunteer_hours
                             if (currentUser != null) {      // Fetch user from database using query
