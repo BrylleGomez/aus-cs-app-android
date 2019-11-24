@@ -28,6 +28,7 @@ public class AppUtils {
     public static String KEY_START_TIME = "start_time";
     public static String KEY_EVENT_HOURS = "event_hours";
     public static String KEY_PAST_VOLUNTEERS = "past_volunteers";
+    public static String KEY_IS_PAST = "is_past";
 
     public static String epochToDate(Long time) {
         return new SimpleDateFormat("MMM dd, yyyy", Locale.US).format(new Date(time));

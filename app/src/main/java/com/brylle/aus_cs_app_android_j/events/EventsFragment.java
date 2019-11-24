@@ -104,6 +104,9 @@ public class EventsFragment extends Fragment {
         // Store details of event fetched from Firebase onto an event object
         // Add this event object to the events array list
 
+        boolean is_past = fetchedEvent.getBoolean(AppUtils.KEY_IS_PAST);
+        if (is_past) return;
+
         // Store info of each fetched event in temp variable
         @NonNull int eventId = fetchedEvent.getLong(AppUtils.KEY_EVENT_ID).intValue();
         String eventName = fetchedEvent.getString(AppUtils.KEY_EVENT_NAME);
