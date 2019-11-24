@@ -85,74 +85,6 @@
         app:layout_constraintTop_toTopOf="@+id/profile_textview_name"
         tools:targetApi="o" />
 
-    <Button
-        android:id="@+id/profile_button_edit"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="120dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="372dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/profile_button_edit"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_button_registered_events"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/profile_button_changepass"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="154dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="372dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/profile_button_changepass"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_button_registered_events"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/profile_button_discard"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="160dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="372dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/profile_button_discard"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.821"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_button_edit"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/profile_button_save"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="134dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="372dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/profile_button_save"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_button_edit"
-        app:layout_constraintVertical_bias="0.0" />
-
     <TextView
         android:id="@+id/profile_textview_phone"
         android:layout_width="wrap_content"
@@ -239,20 +171,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profile_textview_name"
         app:layout_constraintTop_toTopOf="@+id/profile_textview_name" />
-
-    <Button
-        android:id="@+id/profile_button_signout"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorPrimary"
-        android:text="Sign Out"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_button_save"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,11 +46,10 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference firestoreUserList = firebaseFirestore.collection("users");
-    private Button buttonEdit;
-    private Button buttonSave;
-    private Button buttonSignout;
-    private Button buttonDiscard;
-    private Button buttonChangePass;
+//    private Button buttonEdit;
+//    private Button buttonSave;
+//    private Button buttonDiscard;
+    // private Button buttonChangePass;
     private Button buttonRegisteredEvents;
     private ProgressBar progressBar;
     private TextView displayName;
@@ -80,11 +79,11 @@ public class ProfileFragment extends Fragment {
         String userEmail = currentUser.getEmail();
 
         // Initialize Objects
-        buttonEdit = getView().findViewById(R.id.profile_button_edit);
-        buttonSave = getView().findViewById(R.id.profile_button_save);
-        buttonSignout = getView().findViewById(R.id.profile_button_signout);
-        buttonDiscard = getView().findViewById(R.id.profile_button_discard);
-        buttonChangePass = getView().findViewById(R.id.profile_button_changepass);
+//        buttonEdit = getView().findViewById(R.id.profile_button_edit);
+//        buttonSave = getView().findViewById(R.id.profile_button_save);
+//        buttonSignout = getView().findViewById(R.id.profile_button_signout);
+//        buttonDiscard = getView().findViewById(R.id.profile_button_discard);
+        // buttonChangePass = getView().findViewById(R.id.profile_button_changepass);
         buttonRegisteredEvents = getView().findViewById(R.id.profile_button_registered_events);
         progressBar = getView().findViewById(R.id.profile_progressbar);
         displayName = getView().findViewById(R.id.profile_textview_name_p);
@@ -94,12 +93,6 @@ public class ProfileFragment extends Fragment {
         editName = getView().findViewById(R.id.profile_plaintext_editname);
 
         // Attach event listeners
-        buttonSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signoutUser();
-            }
-        });
         buttonRegisteredEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { seeRegisteredEvents();
@@ -126,10 +119,10 @@ public class ProfileFragment extends Fragment {
 //        });
 
         // Hide edit profile objects
-        buttonSave.setVisibility(View.INVISIBLE);
-        buttonDiscard.setVisibility(View.INVISIBLE);
         editName.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
+//        buttonSave.setVisibility(View.INVISIBLE);
+//        buttonDiscard.setVisibility(View.INVISIBLE);
 
         // Retrieve profile information from Firebase
         if(currentUser != null) {
