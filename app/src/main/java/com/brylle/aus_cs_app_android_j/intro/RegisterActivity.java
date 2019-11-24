@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firestoreUserList = firebaseFirestore.collection("users");
-        firestoreUserCount = firebaseFirestore.document("metadata/counts");
+        firestoreUserCount = firebaseFirestore.document("metadata/user_count");
 
         // Initialize view objects
         username = findViewById(R.id.register_plaintext_username);

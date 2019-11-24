@@ -15,6 +15,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.brylle.aus_cs_app_android_j.home.HomeActivity;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -29,7 +31,8 @@ public class CSService extends Service {
 
     // Get references to Firestore elements
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference firestoreEventList = firebaseFirestore.collection("events");
+    // private CollectionReference firestoreEventList = firebaseFirestore.collection("events");
+    private DocumentReference firestoreEventCount = firebaseFirestore.document("metadata/event_count");
 
     @Override
     public void onCreate() {
@@ -57,14 +60,29 @@ public class CSService extends Service {
     private void startListenToDB() {
 
         // test snapshot listener
-        firestoreEventList.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+//        firestoreEventList.addSnapshotListener(new EventListener<QuerySnapshot>() {
+////            @Override
+////            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+////                if (e != null) {
+////                    Log.w("CSAppService", "Listen failed.", e);
+////                    return;
+////                }
+////                if (snapshots != null) {
+////                    Log.d("CSAppService", "EventsList updated!");
+////                    sendNotification("Click to View");
+////                }
+////            }
+////        });
+
+        firestoreEventCount.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w("CSAppService", "Listen failed.", e);
                     return;
                 }
-                if (snapshots != null) {
+                if (documentSnapshot != null) {
                     Log.d("CSAppService", "EventsList updated!");
                     sendNotification("Click to View");
                 }
