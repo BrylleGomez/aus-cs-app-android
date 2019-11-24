@@ -78,12 +78,12 @@ public class Event {
 
     // returns a formatted string with the start and end dates of an event object
     public String getDates() {
-        return "Date: " + this.start_date + " - " + this.end_date;
+        return this.start_date + " - " + this.end_date;
     }
 
     // returns a formatted string with the start and end times of an event object
     public String getTimes(){
-        return "Time: " + this.start_time + " - " + this.end_time;
+        return this.start_time + " - " + this.end_time;
     }
 
     public double getLatitude() {

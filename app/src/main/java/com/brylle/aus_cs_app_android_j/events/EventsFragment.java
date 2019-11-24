@@ -112,7 +112,7 @@ public class EventsFragment extends Fragment {
         String eventLocation = fetchedEvent.getString(AppUtils.KEY_EVENT_LOCATION);
         String startDate = fetchedEvent.getString(AppUtils.KEY_START_DATE);
         String endDate = fetchedEvent.getString(AppUtils.KEY_END_DATE);
-        String startTime = fetchedEvent.getString(AppUtils.KEY_START_DATE);
+        String startTime = fetchedEvent.getString(AppUtils.KEY_START_TIME);
         String endTime = fetchedEvent.getString(AppUtils.KEY_END_TIME);
 
         // Create an Event object with the retrieved event info (in temp variables)
