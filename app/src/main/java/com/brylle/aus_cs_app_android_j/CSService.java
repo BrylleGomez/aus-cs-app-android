@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.brylle.aus_cs_app_android_j.home.HomeActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,13 +27,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class CSService extends Service {
 
-//    public CSService() {
-//
-//    }
-
     // Get references to Firestore elements
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    // private CollectionReference firestoreEventList = firebaseFirestore.collection("events");
     private DocumentReference firestoreEventCount = firebaseFirestore.document("metadata/event_count");
 
     @Override
@@ -58,22 +55,6 @@ public class CSService extends Service {
     }
 
     private void startListenToDB() {
-
-        // test snapshot listener
-
-//        firestoreEventList.addSnapshotListener(new EventListener<QuerySnapshot>() {
-////            @Override
-////            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
-////                if (e != null) {
-////                    Log.w("CSAppService", "Listen failed.", e);
-////                    return;
-////                }
-////                if (snapshots != null) {
-////                    Log.d("CSAppService", "EventsList updated!");
-////                    sendNotification("Click to View");
-////                }
-////            }
-////        });
 
         firestoreEventCount.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -129,6 +110,5 @@ public class CSService extends Service {
         final int NOTIFICATION_ID = 1;
         manager.notify(NOTIFICATION_ID, notification);
     }
-
 
 }

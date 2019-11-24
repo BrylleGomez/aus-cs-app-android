@@ -6,8 +6,6 @@ import android.util.Log;
 
 public class CSApp extends Application {
 
-
-
     @Override
     public void onCreate() {
         super.onCreate();
