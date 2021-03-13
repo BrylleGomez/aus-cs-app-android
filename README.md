@@ -2,4 +2,4 @@
 
 AUS Community Services Mobile App, developed by myself and Ali Reza, is a mobile application designed to digitize the AUS Community Services Division’s system of tracking volunteer hours and volunteer event attendance. It is developed using native Android (Java) and Google Cloud Firestore.
 
-For more information, please refer to this [user guide](../master/User%20Guide.docx).
+For more information, please refer to this [user guide](../working/User%20Guide.docx).
